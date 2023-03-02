@@ -1,6 +1,7 @@
 import {UserType} from '../../types/user.js';
 import typegoose, {getModelForClass, defaultClasses} from '@typegoose/typegoose';
 import {createSHA256} from '../../utils.js';
+import { DEFAULT_AVATAR } from '../../const.js';
 
 
 const {prop, modelOptions} = typegoose;
@@ -22,11 +23,11 @@ export class UserEntity extends defaultClasses.TimeStamps implements UserType {
     this.isPro = data.isPro;
   }
 
-  @prop({ unique: true })
+  @prop({ required: true })
   public name!: string;
 
-  @prop({required: true, default: ''})
-  public avatar!: string;
+  @prop({default: DEFAULT_AVATAR})
+  public avatar?: string;
 
   @prop({required: true, default: ''})
   private password!: string;
@@ -44,10 +45,10 @@ export class UserEntity extends defaultClasses.TimeStamps implements UserType {
     return hashPassword === this.password;
   }
 
-  @prop({required: true, default: false})
+  @prop({ required: true })
   public isPro!: boolean;
 
-  @prop({ unique: true, required: true })
+  @prop({ unique: true})
   public email!: string;
 }
 

@@ -17,6 +17,7 @@ export default class OfferService implements OfferServiceInterface {
 
   public async find(limit?: number): Promise<DocumentType<OfferEntity>[]> {
     const limitCount = limit ?? DEFAULT_OFFERS_COUNT;
+
     return this.offerModel
       .find()
       .limit(limitCount)

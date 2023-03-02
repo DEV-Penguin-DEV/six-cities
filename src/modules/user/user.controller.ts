@@ -71,6 +71,9 @@ export default class UserController extends Controller {
         'UserController',
       );
     }
+    // if (!user.avatar) {
+    //   user.avatar = DEFAULT_AVATAR;
+    // }
     const token = await createJWT(
       JWT_ALGORITM,
       this.configService.get('JWT_SECRET'),

@@ -20,7 +20,10 @@ import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.m
 
 type ParamsGetOffer = {
   offerId: string;
-  limit: number;
+}
+
+type LimitParams = {
+  limit?: number;
 }
 
 @injectable()
@@ -118,11 +121,11 @@ export default class OfferController extends Controller {
   }
 
   public async index(
-    _req: Request,
+    { query }: Request<LimitParams>,
     res: Response
   ): Promise<void> {
-
-    const offers = await this.offerService.find();
+    const { limit } = query as LimitParams;
+    const offers = await this.offerService.find(limit as number);
     this.ok(res, fillDTO(OfferResponse, offers));
   }
 

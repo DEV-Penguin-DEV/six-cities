@@ -1,5 +1,5 @@
 import { CoordinatesType } from '../../../types/offer.js';
-import {IsArray, IsObject, Length, IsString, IsEnum, IsBoolean, IsDateString, IsInt, Max, MaxLength, Min, MinLength} from 'class-validator';
+import {IsArray, IsObject, IsString, ArrayMinSize, ArrayMaxSize, IsEnum, IsBoolean, IsDateString, IsInt, Max, MaxLength, Min, MinLength} from 'class-validator';
 import { Benefits, CitiesNames, RoomType } from '../../../const.js';
 
 export default class CreateOfferDto {
@@ -17,15 +17,17 @@ export default class CreateOfferDto {
   @IsEnum(RoomType, {message: 'type must be one of list'})
   public type!: RoomType;
 
-  @IsString({message: 'firstname is required'})
+  @IsString({message: 'preview photo is required'})
   public preview!: string;
 
   @IsArray({ message: 'photos must be an array' })
-  @Length(6, 6, { message: 'photos must be 6' })
+  @ArrayMinSize(6, { message: 'photos must be 6' })
+  @ArrayMaxSize(6, { message: 'photos must be 6' })
   public photos!: string[];
 
   @IsArray({message: 'benefits must be an array'})
-  @IsEnum(Benefits, {each: true, message: 'benefits must be one of list'})
+  @IsEnum(Benefits, { each: true, message: 'benefits must be one of list' })
+  @ArrayMinSize(1, { message: 'must be checked minimum 1 benefit element' })
   public benefits!: Benefits[];
 
   @IsBoolean({message: 'isPremium must be an boolean'})

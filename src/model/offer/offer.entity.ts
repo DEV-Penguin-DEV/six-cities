@@ -1,15 +1,17 @@
 import typegoose, {defaultClasses, getModelForClass, Ref} from '@typegoose/typegoose';
 import { Benefits, CitiesNames } from '../../const.js';
-import { CoordinatesType} from '../../types/offer.js';
 import { UserEntity } from '../user/user.entity.js';
 
-const {prop, modelOptions} = typegoose;
+const {prop, modelOptions, Severity} = typegoose;
 
 export interface OfferEntity extends defaultClasses.Base {}
 
  @modelOptions({
    schemaOptions: {
-     collection: 'offers'
+     collection: 'offers',
+   },
+   options: {
+     allowMixed: Severity.WARN,
    }
  })
 // TODO Вывод
@@ -32,7 +34,11 @@ export class OfferEntity extends defaultClasses.TimeStamps {
    @prop({ required: true})
   public preview!: string;
 
-   @prop()
+   @prop(
+     {
+       type: () => String
+     }
+   )
    public photos!: string[];
 
    @prop({
@@ -68,8 +74,15 @@ export class OfferEntity extends defaultClasses.TimeStamps {
    })
    public userId!: Ref<UserEntity>;
 
-   @prop()
-   public coordinates!: CoordinatesType;
+   @prop(
+     {
+       type: () => Object(Number)
+     }
+   )
+   public coordinates!: {
+    latitude: number;
+    longitude: number;
+   };
 }
 
 export const OfferModel = getModelForClass(OfferEntity);
